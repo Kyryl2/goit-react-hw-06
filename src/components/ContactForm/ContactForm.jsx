@@ -4,6 +4,8 @@ import { ErrorMessage } from "formik";
 import { nanoid } from "nanoid";
 
 import c from "./ContactForm.module.css";
+import { useDispatch } from "react-redux";
+import { addContact } from "../../redux/contactsSlice";
 
 const initualValues = {
   name: "",
@@ -21,10 +23,14 @@ const FeedbackSchema = Yup.object().shape({
     .required("Required"),
 });
 
-const ContactForm = ({ handleSubmit }) => {
+const ContactForm = () => {
   const nameFieldId = nanoid();
   const numberFieldId = nanoid();
-
+  const dispatch = useDispatch();
+  const handleSubmit = (values, actions) => {
+    dispatch(addContact(values));
+    actions.resetForm();
+  };
   return (
     <Formik
       initialValues={initualValues}
